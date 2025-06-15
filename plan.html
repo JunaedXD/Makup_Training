@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Choose Your Plan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #ffa5a5, #fbc0c0);
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 32px;
+        color: #333;
+      }
+
+      .plans-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .plan-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 30px 20px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 2px solid #e0e0e0; /* Outline */
+        transition: transform 0.3s ease, box-shadow 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      .plan-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+        border-color: #007bff; /* Highlighted border */
+      }
+
+      .plan-card h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #222;
+      }
+
+      .plan-price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2e7d32;
+        margin-bottom: 15px;
+      }
+
+      .plan-benefits {
+        list-style: none;
+        margin-bottom: 20px;
+      }
+
+      .plan-benefits li {
+        margin-bottom: 8px;
+        color: #555;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .plan-benefits li::before {
+        content: "✔";
+        position: absolute;
+        left: 0;
+        color: #4caf50;
+      }
+
+      .select-button {
+        display: block;
+        margin: 20px auto 0;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 12px 22px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        visibility: hidden;
+      }
+
+      .plan-card:hover .select-button {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .select-button:hover {
+        background-color: #0056b3;
+      }
+
+      @media (max-width: 600px) {
+        h1 {
+          font-size: 24px;
+        }
+        .plan-card {
+          padding: 24px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Choose Your Subscription Plan</h1>
+
+    <div class="plans-container">
+      <div class="plan-card">
+        <h3>Basic</h3>
+        <p class="plan-price">₹199</p>
+        <ul class="plan-benefits">
+          <li>Access to beginner courses</li>
+          <li>Email support</li>
+          <li>Community access</li>
+        </ul>
+        <button class="select-button" onclick="selectPlan('Basic')">
+          Select Basic Plan
+        </button>
+      </div>
+
+      <div class="plan-card">
+        <h3>Standard</h3>
+        <p class="plan-price">₹399</p>
+        <ul class="plan-benefits">
+          <li>All Basic benefits</li>
+          <li>Intermediate level courses</li>
+          <li>Priority email support</li>
+          <li>Monthly live Q&A</li>
+        </ul>
+        <button class="select-button" onclick="selectPlan('Standard')">
+          Select Standard Plan
+        </button>
+      </div>
+
+      <div class="plan-card">
+        <h3>Premium</h3>
+        <p class="plan-price">₹599</p>
+        <ul class="plan-benefits">
+          <li>All Standard benefits</li>
+          <li>1-on-1 Mentorship</li>
+          <li>Downloadable resources</li>
+          <li>Certificate of completion</li>
+        </ul>
+        <button class="select-button" onclick="selectPlan('Premium')">
+          Select Premium Plan
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function selectPlan(planName) {
+        localStorage.setItem("chosenPlan", planName);
+        window.location.href = "form.html"; // change path if needed
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form with Plan Benefits</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+       background: linear-gradient(135deg, #ffa5a5, #fbc0c0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px;
+    }
+
+    .form-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      max-width: 520px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 12px 12px 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: transparent;
+      outline: none;
+    }
+
+    .form-group label {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      background: #fff;
+      padding: 0 4px;
+      color: #888;
+      transition: 0.2s ease all;
+      pointer-events: none;
+    }
+
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label,
+    .form-group textarea:focus + label,
+    .form-group textarea:not(:placeholder-shown) + label,
+    .form-group select:focus + label,
+    .form-group select:not([value=""]) + label {
+      top: -10px;
+      font-size: 13px;
+      color: #007bff;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      height: 80px;
+    }
+
+    .selected-plan {
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .selected-plan h4 {
+      margin: 0 0 6px;
+      color: #2e7d32;
+    }
+
+    .selected-plan ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .selected-plan li {
+      margin-bottom: 4px;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .selected-plan button {
+      background: none;
+      border: none;
+      color: #007bff;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .form-actions button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .clear-btn {
+      background: #f44336;
+      color: #fff;
+    }
+
+    .clear-btn:hover {
+      background: #d32f2f;
+    }
+
+    .submit-btn {
+      background: #4caf50;
+      color: #fff;
+    }
+
+    .submit-btn:hover {
+      background: #388e3c;
+    }
+
+    #plan-group {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Subscribe Plan</h2>
+  <form id="subscriptionForm">
+    <div class="form-group">
+      <input type="text" id="name" placeholder=" " required>
+      <label for="name">Full Name</label>
+    </div>
+
+    <div class="form-group">
+      <input type="email" id="email" placeholder=" " required>
+      <label for="email">Email</label>
+    </div>
+
+    <div class="form-group">
+      <input type="tel" id="phone" placeholder=" " required>
+      <label for="phone">Phone</label>
+    </div>
+
+    <div class="form-group">
+      <input type="text" id="pin" placeholder=" " required>
+      <label for="pin">PIN Code</label>
+    </div>
+
+    <div class="form-group">
+      <textarea id="address" placeholder=" " required></textarea>
+      <label for="address">Address</label>
+    </div>
+
+    <!-- Selected Plan Preview with Benefits -->
+    <div id="selectedPlanBox" class="selected-plan" style="display:none;">
+      <h4>Selected Plan: <span id="planName"></span></h4>
+      <p>Price: <strong id="planPrice"></strong></p>
+      <ul id="planBenefits"></ul>
+      <button type="button" id="changePlanBtn">Change Plan</button>
+    </div>
+
+    <!-- Dropdown to Choose Plan -->
+    <div class="form-group" id="plan-group">
+      <select id="planSelect">
+        <option value="" disabled hidden></option>
+        <option value="Basic">Basic</option>
+        <option value="Standard">Standard</option>
+        <option value="Premium">Premium</option>
+      </select>
+      <label for="planSelect">Choose a Plan</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="reset" class="clear-btn">Clear</button>
+      <button type="submit" class="submit-btn">Submit & Pay</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  const planSelect = document.getElementById("planSelect");
+  const selectedPlanBox = document.getElementById("selectedPlanBox");
+  const planGroup = document.getElementById("plan-group");
+  const planName = document.getElementById("planName");
+  const planPrice = document.getElementById("planPrice");
+  const planBenefits = document.getElementById("planBenefits");
+
+  const prices = {
+    Basic: "₹199",
+    Standard: "₹399",
+    Premium: "₹599"
+  };
+
+  const benefits = {
+    Basic: [
+      "Access to beginner courses",
+      "Email support",
+      "Community access"
+    ],
+    Standard: [
+      "All Basic benefits",
+      "Access to intermediate courses",
+      "Priority email support",
+      "Monthly live Q&A"
+    ],
+    Premium: [
+      "All Standard benefits",
+      "1-on-1 mentoring session",
+      "Downloadable resources",
+      "Certificate of completion"
+    ]
+  };
+
+  function displaySelectedPlan(plan) {
+    if (prices[plan]) {
+      planName.textContent = plan;
+      planPrice.textContent = prices[plan];
+      planBenefits.innerHTML = "";
+      benefits[plan].forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        planBenefits.appendChild(li);
+      });
+      selectedPlanBox.style.display = "block";
+      planGroup.style.display = "none";
+    }
+  }
+
+  function showPlanDropdown() {
+    selectedPlanBox.style.display = "none";
+    planGroup.style.display = "block";
+  }
+
+  // Plan changed manually
+  planSelect.addEventListener("change", () => {
+    const chosen = planSelect.value;
+    localStorage.setItem("chosenPlan", chosen);
+    displaySelectedPlan(chosen);
+  });
+
+  // "Change Plan" button
+  document.getElementById("changePlanBtn").addEventListener("click", () => {
+    showPlanDropdown();
+  });
+
+  // Clear form and local storage
+  document.querySelector(".clear-btn").addEventListener("click", () => {
+    localStorage.removeItem("chosenPlan");
+    showPlanDropdown();
+  });
+
+  // Load saved plan
+  window.onload = () => {
+    const savedPlan = localStorage.getItem("chosenPlan");
+    if (savedPlan && prices[savedPlan]) {
+      planSelect.value = savedPlan;
+      displaySelectedPlan(savedPlan);
+    } else {
+      showPlanDropdown();
+    }
+  };
+</script>
+
+</body>
+</html>
