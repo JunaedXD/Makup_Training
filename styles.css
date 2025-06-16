@@ -803,7 +803,6 @@ nav a:hover::after {
 }
 
 #event-section {
-  height: 70vh;
   background-color: #ffd5d5;
   max-width: 900px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -914,6 +913,7 @@ nav a:hover::after {
   .event-details.show {
     transform: translateY(0);
   }
+ 
 }
 
 
