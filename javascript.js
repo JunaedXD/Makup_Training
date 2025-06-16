@@ -191,10 +191,6 @@ function changeSlide(n) {
 
 
 
-
-
-
-
   const btn = document.getElementById("scrollToTopBtn");
 
   window.addEventListener("scroll", () => {
@@ -248,3 +244,96 @@ function changeSlide(n) {
   });
 
 
+
+
+
+
+const dayButtons = document.querySelectorAll('.day');
+const eventDetails = document.querySelectorAll('.event-details');
+const progressBar = document.querySelector('.progress-bar');
+const progressContainer = document.querySelector('.progress-bar-container');
+let currentIndex2 = 0;
+let autoplayInterval;
+let isPaused = false;
+let userInteracted = false;
+let inView = true;
+
+const isMobile = () => window.innerWidth <= 768;
+
+function showEvent(index) {
+  dayButtons.forEach((btn, i) => {
+    btn.classList.toggle('active', i === index);
+  });
+
+  eventDetails.forEach((detail, i) => {
+    detail.classList.remove('show');
+    if (i === index) {
+      if (isMobile()) {
+        dayButtons[i].insertAdjacentElement('afterend', detail);
+        setTimeout(() => {
+          detail.classList.add('show');
+        }, 10);
+      } else {
+        detail.classList.add('show');
+      }
+    }
+  });
+
+  if (!isMobile()) {
+    progressBar.style.transition = 'none';
+    progressBar.style.width = '0%';
+    void progressBar.offsetWidth;
+    progressBar.style.transition = 'width 4s linear';
+    progressBar.style.width = '100%';
+    progressContainer.classList.remove('hidden');
+  }
+}
+
+function startAutoplay() {
+  if (isMobile()) return;
+  autoplayInterval = setInterval(() => {
+    if (!isPaused && !userInteracted && inView) {
+      currentIndex2 = (currentIndex2 + 1) % dayButtons.length;
+      showEvent(currentIndex2);
+    }
+  }, 4000);
+}
+
+function stopAutoplay() {
+  clearInterval(autoplayInterval);
+  if (progressBar) progressBar.style.width = '0%';
+  progressContainer.classList.add('hidden');
+}
+
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    const activeIndex = [...dayButtons].findIndex(btn => btn.classList.contains('active'));
+    showEvent(activeIndex);
+  }
+});
+
+dayButtons.forEach((btn, i) => {
+  btn.addEventListener('click', () => {
+    stopAutoplay();
+    userInteracted = true;
+    isPaused = true;
+    currentIndex2 = i;
+    showEvent(i);
+  });
+});
+
+const observer5 = new IntersectionObserver(([entry]) => {
+  inView = entry.isIntersecting;
+  if (!isMobile()) {
+    if (inView && userInteracted) {
+      isPaused = false;
+      userInteracted = false;
+      startAutoplay();
+    }
+  }
+}, { threshold: 0.3 });
+
+observer5.observe(document.getElementById('event-section'));
+
+showEvent(0);
+startAutoplay();
