@@ -184,3 +184,67 @@ function changeSlide(n) {
   document.getElementById("lightbox-img").src = images[currentIndex];
 }
 
+
+
+
+
+
+
+
+
+
+
+
+  const btn = document.getElementById("scrollToTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 200) {
+      btn.classList.add("show");
+    } else {
+      btn.classList.remove("show");
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+
+
+
+
+
+
+
+
+
+
+  const observer4 = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  document.querySelectorAll('.mentor-card').forEach(card => {
+    observer4.observe(card);
+  });
+
+
+
+
+
+
+
+  const video = document.getElementById("bg-video");
+
+  video.addEventListener("canplaythrough", () => {
+    document.body.classList.add("loaded");
+  });
+
+
