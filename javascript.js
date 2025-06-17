@@ -381,3 +381,58 @@ startAutoplay();
 
   window.addEventListener('scroll', handleScrollAnimation);
   window.addEventListener('load', handleScrollAnimation);
+
+
+
+
+
+
+
+  
+
+
+
+const slider = document.getElementById('sliderTrack');
+  const testimonials = slider.children.length;
+  const container = document.getElementById('testimonialSlider');
+
+  let currentSlide = 0;
+
+  function getSlidesPerView() {
+    if (window.innerWidth <= 600) return 1;
+    if (window.innerWidth <= 900) return 2;
+    return 3;
+  }
+
+  function updateSlide() {
+    const slidesPerView = getSlidesPerView();
+    const totalSlides = testimonials;
+    const maxSlideIndex = Math.ceil(totalSlides / slidesPerView) - 1;
+    if (currentSlide > maxSlideIndex) currentSlide = 0;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+  }
+
+  function nextSlide() {
+    currentSlide++;
+    updateSlide();
+  }
+
+  function prevSlide() {
+    currentSlide--;
+    if (currentSlide < 0) {
+      currentSlide = Math.ceil(testimonials / getSlidesPerView()) - 1;
+    }
+    updateSlide();
+  }
+
+  let autoSlide = setInterval(nextSlide, 4000);
+
+  container.addEventListener("mouseenter", () => clearInterval(autoSlide));
+  container.addEventListener("mouseleave", () => {
+    autoSlide = setInterval(nextSlide, 4000);
+  });
+
+  window.addEventListener("resize", updateSlide);
+
+
+  
