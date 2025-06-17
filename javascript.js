@@ -337,3 +337,47 @@ observer5.observe(document.getElementById('event-section'));
 
 showEvent(0);
 startAutoplay();
+
+
+
+
+
+
+
+
+
+
+ const latitude = 23.048173254004578;
+  const longitude = 88.83277220177523;
+
+  function openMaps() {
+    const isApple = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const appleURL = `https://maps.apple.com/?ll=${latitude},${longitude}`;
+    const googleURL = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    window.open(isApple ? appleURL : googleURL, "_blank");
+  }
+
+  function getDirections() {
+    const isApple = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const appleURL = `https://maps.apple.com/?daddr=${latitude},${longitude}`;
+    const googleURL = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+    window.open(isApple ? appleURL : googleURL, "_blank");
+  }
+
+
+
+
+
+
+   function handleScrollAnimation() {
+    const elements = document.querySelectorAll('.animate-on-scroll');
+    elements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.85) {
+        el.classList.add('visible');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', handleScrollAnimation);
+  window.addEventListener('load', handleScrollAnimation);
